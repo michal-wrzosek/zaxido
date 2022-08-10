@@ -1,0 +1,14 @@
+query listings {
+  listings {
+    id
+    title
+    subreddit
+    author
+    permalink
+    url
+    thumbnail
+    ups
+    downs
+    numberOfComments
+  }
+}

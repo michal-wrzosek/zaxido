@@ -1,0 +1,51 @@
+type ListingPreviewItem {
+  url: String!
+  width: Int!
+  height: Int!
+}
+
+type ListingPreview {
+  source: ListingPreviewItem!
+  resolutions: [ListingPreviewItem!]!
+}
+
+enum Sentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
+enum ListingKind {
+  T1
+  T2
+  T3
+  T4
+  T5
+  T6
+}
+
+type Listing {
+  id: String!
+  kind: ListingKind!
+  title: String!
+  subreddit: String!
+  permalink: String!
+  author: String!
+  numberOfComments: Int!
+  url: String!
+  createdUTC: Int!
+  thumbnail: String
+  thumbnailWidth: Int
+  thumbnailHeight: Int
+  previews: [ListingPreview!]!
+  isVideo: Boolean!
+  isNSFW: Boolean!
+  ups: Int!
+  downs: Int!
+  sentiment: Sentiment!
+  updateId: Int!
+}
+
+type Query {
+  listings: [Listing!]!
+}
