@@ -44,7 +44,15 @@
         "style": "styled-components",
         "linter": "eslint"
       }
+    },
+    "@nrwl/gatsby": {
+      "application": {
+        "style": "styled-components"
+      }
     }
   },
-  "defaultProject": "web-app"
+  "defaultProject": "web-app",
+  "cli": {
+    "defaultCollection": "@nrwl/gatsby"
+  }
 }

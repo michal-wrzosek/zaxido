@@ -7,6 +7,8 @@
     "backend-common": "libs/backend-common",
     "component-library": "libs/component-library",
     "component-library-e2e": "apps/component-library-e2e",
+    "gatsby-app": "apps/gatsby-app",
+    "gatsby-app-e2e": "apps/gatsby-app-e2e",
     "news-generator": "apps/news-generator",
     "web-app": "apps/web-app",
     "web-app-e2e": "apps/web-app-e2e"
