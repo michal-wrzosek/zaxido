@@ -25,22 +25,22 @@ jobs:
         env:
           NODE_ENV: 'production'
           TEMP_DIR_PATH: '/no-temp-dir'
-          REDDIT_APP_ID: ${{ secretes.REDDIT_APP_ID }}
-          REDDIT_APP_SECRET: ${{ secretes.REDDIT_APP_SECRET }}
-          OPENAI_TOKEN: ${{ secretes.OPENAI_TOKEN }}
-          MONGODB_USERNAME: ${{ secretes.MONGODB_USERNAME }}
-          MONGODB_PASSWORD: ${{ secretes.MONGODB_PASSWORD }}
-          MONGODB_DB: ${{ secretes.MONGODB_DB }}
-          MONGODB_DOMAIN: ${{ secretes.MONGODB_DOMAIN }}
+          REDDIT_APP_ID: ${{ secrets.REDDIT_APP_ID }}
+          REDDIT_APP_SECRET: ${{ secrets.REDDIT_APP_SECRET }}
+          OPENAI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
+          MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          MONGODB_DB: ${{ secrets.MONGODB_DB }}
+          MONGODB_DOMAIN: ${{ secrets.MONGODB_DOMAIN }}
 
       - name: Build Gatsby app
         run: npx nx run gatsby-app:build --configuration production --with-deps
         env:
           NODE_ENV: 'production'
-          MONGODB_USERNAME: ${{ secretes.MONGODB_USERNAME }}
-          MONGODB_PASSWORD: ${{ secretes.MONGODB_PASSWORD }}
-          MONGODB_DB: ${{ secretes.MONGODB_DB }}
-          MONGODB_DOMAIN: ${{ secretes.MONGODB_DOMAIN }}
+          MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          MONGODB_DB: ${{ secrets.MONGODB_DB }}
+          MONGODB_DOMAIN: ${{ secrets.MONGODB_DOMAIN }}
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
