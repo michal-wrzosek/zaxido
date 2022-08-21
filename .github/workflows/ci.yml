@@ -26,7 +26,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Generate news
-        run: npx nx run news-generator:serve --no-watch --configuration production --with-deps
+        run: npx nx run news-generator:serve --no-watch --configuration production
         env:
           NODE_ENV: 'production'
           TEMP_DIR_PATH: '/no-temp-dir'

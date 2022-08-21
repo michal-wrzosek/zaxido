@@ -60,6 +60,7 @@ module.exports = {
         nodeType: "mongodbZaxido0Listings",
         imagePath: "thumbnail",
         name: "thumbnailGatsby",
+        silent: true,
       },
     },
     {
@@ -68,6 +69,7 @@ module.exports = {
         nodeType: "mongodbZaxido0Listings",
         imagePath: "previews[].source.url",
         name: "previewsSourceUrlGatsby",
+        silent: true,
       },
     },
     {

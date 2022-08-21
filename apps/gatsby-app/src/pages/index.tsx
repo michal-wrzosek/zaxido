@@ -19,7 +19,7 @@ export function Index(props) {
   const listings = props.data.allMongodbZaxido0Listings.edges.map(
     ({ node }) => node as GatsbyListing
   )
-  console.log("listings", listings)
+
   return (
     <ComponentLibraryContextProvider
       contextValue={componentLibraryContextValue}
