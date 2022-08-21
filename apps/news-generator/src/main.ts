@@ -1,4 +1,6 @@
-import { connect, DBListing } from '@zaxido/backend-common';
+import { isUri } from 'valid-url';
+import { connect } from '@zaxido/backend-common';
+import { DBListing } from '@zaxido/types-common';
 import {
   MONGODB_DB,
   MONGODB_DOMAIN,
@@ -17,13 +19,6 @@ async function run() {
     password: MONGODB_PASSWORD,
     dbName: MONGODB_DB,
     domain: MONGODB_DOMAIN,
-  });
-
-  const updateId = +new Date();
-
-  collections.listingsUpdateId.insertOne({
-    id: updateId,
-    finished: false,
   });
 
   try {
@@ -54,10 +49,13 @@ async function run() {
         const sentiment = sentiments[listingResponse.data.id];
         if (!sentiment) return listingsAcc;
 
+        // We want only positive listings
+        if (sentiment !== 'positive') return listingsAcc;
+
         return [
           ...listingsAcc,
           {
-            id: listingResponse.data.id,
+            redditId: listingResponse.data.id,
             kind: listingResponse.kind,
             title: listingResponse.data.title,
             subreddit: listingResponse.data.subreddit,
@@ -66,9 +64,11 @@ async function run() {
             numberOfComments: listingResponse.data.num_comments,
             url: listingResponse.data.url,
             createdUTC: listingResponse.data.created_utc,
-            thumbnail: listingResponse.data.thumbnail,
-            thumbnailWidth: listingResponse.data.thumbnail_width,
-            thumbnailHeight: listingResponse.data.thumbnail_height,
+            thumbnail: isUri(listingResponse.data.thumbnail)
+              ? listingResponse.data.thumbnail
+              : null,
+            thumbnailWidth: listingResponse.data.thumbnail_width ?? null,
+            thumbnailHeight: listingResponse.data.thumbnail_height ?? null,
             previews:
               listingResponse.data.preview?.images.map((image) => ({
                 source: image.source,
@@ -78,19 +78,14 @@ async function run() {
             ups: listingResponse.data.ups,
             downs: listingResponse.data.downs,
             isNSFW: listingResponse.data.over_18,
-            sentiment: sentiment,
-            updateId,
           },
         ];
       },
       []
     );
 
+    await collections.listings.drop();
     await collections.listings.insertMany(listings);
-    await collections.listingsUpdateId.updateOne(
-      { id: updateId },
-      { $set: { finished: true } }
-    );
   } catch (error) {
     console.error(error);
   } finally {
@@ -110,4 +105,5 @@ run()
   })
   .finally(() => {
     console.log('FINISH');
+    process.exit();
   });

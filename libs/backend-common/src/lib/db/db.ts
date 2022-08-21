@@ -1,5 +1,5 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
-import { DBListing, DBListingsUpdateId } from './db.types';
+import { DBListing } from '@zaxido/types-common';
 
 export interface GetUriProps {
   username: string;
@@ -32,7 +32,6 @@ export async function connect({
 
   const collections = {
     listings: db.collection<DBListing>('listings'),
-    listingsUpdateId: db.collection<DBListingsUpdateId>('listings-update-id'),
   };
 
   async function closeConnection() {

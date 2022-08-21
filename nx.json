@@ -51,7 +51,6 @@
       }
     }
   },
-  "defaultProject": "web-app",
   "cli": {
     "defaultCollection": "@nrwl/gatsby"
   }

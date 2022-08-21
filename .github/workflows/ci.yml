@@ -1,0 +1,58 @@
+name: Deploy
+on:
+  workflow_dispatch:
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+        with:
+          main-branch-name: 'master'
+
+      - run: |
+          echo "BASE: ${{ env.NX_BASE }}"
+          echo "HEAD: ${{ env.NX_HEAD }}"
+
+      - run: yarn ci
+
+      - name: Generate news
+        run: npx nx run news-generator:serve --no-watch --configuration production --with-deps
+        env:
+          NODE_ENV: 'production'
+          TEMP_DIR_PATH: '/no-temp-dir'
+          REDDIT_APP_ID: ${{ secretes.REDDIT_APP_ID }}
+          REDDIT_APP_SECRET: ${{ secretes.REDDIT_APP_SECRET }}
+          OPENAI_TOKEN: ${{ secretes.OPENAI_TOKEN }}
+          MONGODB_USERNAME: ${{ secretes.MONGODB_USERNAME }}
+          MONGODB_PASSWORD: ${{ secretes.MONGODB_PASSWORD }}
+          MONGODB_DB: ${{ secretes.MONGODB_DB }}
+          MONGODB_DOMAIN: ${{ secretes.MONGODB_DOMAIN }}
+
+      - name: Build Gatsby app
+        run: npx nx run gatsby-app:build --configuration production --with-deps
+        env:
+          NODE_ENV: 'production'
+          MONGODB_USERNAME: ${{ secretes.MONGODB_USERNAME }}
+          MONGODB_PASSWORD: ${{ secretes.MONGODB_PASSWORD }}
+          MONGODB_DB: ${{ secretes.MONGODB_DB }}
+          MONGODB_DOMAIN: ${{ secretes.MONGODB_DOMAIN }}
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: './apps/gatsby-app/public'
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: 'Deploy from GitHub Actions'
+          enable-pull-request-comment: false
+          enable-commit-comment: false
+          overwrites-pull-request-comment: false
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1

@@ -16,9 +16,9 @@
     "baseUrl": ".",
     "noUncheckedIndexedAccess": true,
     "paths": {
-      "@zaxido/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@zaxido/backend-common": ["libs/backend-common/src/index.ts"],
-      "@zaxido/component-library": ["libs/component-library/src/index.ts"]
+      "@zaxido/component-library": ["libs/component-library/src/index.ts"],
+      "@zaxido/types-common": ["libs/types-common/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
