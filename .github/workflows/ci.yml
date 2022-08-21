@@ -18,7 +18,8 @@ jobs:
           echo "BASE: ${{ env.NX_BASE }}"
           echo "HEAD: ${{ env.NX_HEAD }}"
 
-      - run: yarn ci
+      - name: Install all dependencies
+        run: yarn install --frozen-lockfile
 
       - name: Generate news
         run: npx nx run news-generator:serve --no-watch --configuration production --with-deps
@@ -42,7 +43,7 @@ jobs:
           MONGODB_DB: ${{ secrets.MONGODB_DB }}
           MONGODB_DOMAIN: ${{ secrets.MONGODB_DOMAIN }}
 
-      - name: Deploy to Netlify
+      - name: Deploy to Gatsby app to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
           publish-dir: './apps/gatsby-app/public'
