@@ -1,5 +1,5 @@
 import React from "react"
-import { ThemeProvider } from "styled-components"
+import styled, { ThemeProvider } from "styled-components"
 import { graphql } from "gatsby"
 import { GatsbyListing } from "@zaxido/types-common"
 import {
@@ -15,6 +15,11 @@ const componentLibraryContextValue: ComponentLibraryContextValue = {
   appType: "gatsby",
 }
 
+const StyledList = styled.div`
+  padding: 20px;
+  background: #c1c8e4;
+`
+
 export function Index(props) {
   const listings = props.data.allMongodbZaxido0Listings.edges.map(
     ({ node }) => node as GatsbyListing
@@ -26,9 +31,9 @@ export function Index(props) {
     >
       <ThemeProvider theme={lightTheme}>
         <GlobalStyles />
-        <div>
+        <StyledList>
           <ListingList listings={listings} />
-        </div>
+        </StyledList>
       </ThemeProvider>
     </ComponentLibraryContextProvider>
   )
