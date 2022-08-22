@@ -19,9 +19,14 @@ export const listingTheme = (theme: Themes) => ({
 const themeSelector = getThemeSelector('listing');
 
 export const Comments = styled.a`
-  display: block;
-  color: inherit;
+display:inline-block;
+  color: #25274D;
+  background: white;
   text-decoration: none;
+  border: 1px solid #25274D;
+  border-radius:4px;
+  margin: 4px;
+  padding:4px
 `;
 export const Thumbnail = styled.img`
   margin-top: ${themeSelector('thumbnailMarginTop')};
@@ -39,11 +44,14 @@ export const TopBar = styled.div`
   display: flex;
   gap: ${themeSelector('topBarGap')};
 `;
-export const MainPart = styled.div``;
+export const MainPart = styled.div`
+  padding:5px;`;
 export const LeftSide = styled.div`
   display: flex;
   flex-direction: column;
-
+  background: #8860D0;
+  padding:5px;
+  color: white;
   > svg {
     font-size: ${themeSelector('leftSideArrowsSize')};
   }
@@ -53,4 +61,5 @@ export const Container = styled.div`
   gap: ${themeSelector('sidesGap')};
   font-size: ${themeSelector('baseFontSize')};
   color: ${themeSelector('fontColor')};
+  background:white;
 `;

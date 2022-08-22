@@ -4,7 +4,7 @@ export const messages = defineMessages({
   postedBy: {
     defaultMessage: 'Posted by {author}',
   },
-  comments: {
+comments: {
     defaultMessage: '{numberOfComments} comments',
   },
 });

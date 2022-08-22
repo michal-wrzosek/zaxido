@@ -35,17 +35,21 @@ export const Listing = ({
         <Styles.Title href={url} target="_blank" rel="noopener noreferrer">
           {title}
         </Styles.Title>
-        {thumbnail ? <Styles.Thumbnail src={thumbnail} /> : null}
-        <Styles.Comments
-          href={`https://reddit.com${permalink}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <FormattedMessage
-            {...messages.comments}
-            values={{ numberOfComments }}
-          />
-        </Styles.Comments>
+        {thumbnail && thumbnail !== 'self' ? (
+          <Styles.Thumbnail src={thumbnail} />
+        ) : null}
+        <div>
+          <Styles.Comments
+            href={`https://reddit.com${permalink}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FormattedMessage
+              {...messages.comments}
+              values={{ numberOfComments }}
+            />
+          </Styles.Comments>
+        </div>
       </Styles.MainPart>
     </Styles.Container>
   );
