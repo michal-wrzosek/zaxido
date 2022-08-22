@@ -35,6 +35,9 @@ export const subredditBlacklist = [
   'BlackPeopleTwitter',
   'meirl',
   'HolUp',
+  'me_irl',
+  'MaliciousCompliance',
+  'ShitMomGroupsSay',
 ];
 
 export interface GetSentimentsFromHardcodedRulesProps {
