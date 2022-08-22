@@ -1,3 +1,5 @@
+export type Sentiment = 'positive' | 'neutral' | 'negative';
+
 export interface DBListingPreviewItem {
   url: string;
   width: number;
@@ -29,6 +31,11 @@ export interface DBListing {
   isNSFW: boolean;
   ups: number;
   downs: number;
+}
+
+export interface DBSentiment {
+  redditId: string;
+  sentiment: Sentiment;
 }
 
 export interface GatsbyImage {

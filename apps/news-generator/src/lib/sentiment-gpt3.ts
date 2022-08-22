@@ -1,6 +1,13 @@
+import { DBSentiment, Sentiment } from '@zaxido/types-common';
+import { Collection } from 'mongodb';
 import { memo } from '../utils/memo';
 import { wait } from '../utils/wait';
 import { sendGPTRequest } from './gpt';
+import {
+  GetSentimentProps,
+  InputIdToSentimentMap,
+  SentimentInput,
+} from './sentiment-common';
 
 interface SentimentExample {
   title: string;
@@ -95,18 +102,6 @@ export function getSentimentPrompt({
     .join(`\n\n`);
 }
 
-export interface SentimentInput {
-  id: string;
-  title: string;
-  subreddit: string;
-}
-
-interface GetSentimentProps {
-  input: SentimentInput;
-}
-
-export type Sentiment = 'positive' | 'neutral' | 'negative';
-
 export async function getSentiment({
   input: { title, subreddit },
 }: GetSentimentProps): Promise<Sentiment> {
@@ -139,19 +134,31 @@ export async function getSentiment({
   return sentiment;
 }
 
-export type InputIdToSentimentMap = Record<string, Sentiment>;
-
-interface GetSentimentsForListingsProps {
+interface getSentimentsFromGPT3Props {
   inputs: SentimentInput[];
+  sentimentsCollection: Collection<DBSentiment>;
 }
 
-export async function getSentiments({
+export async function getSentimentsFromGPT3({
   inputs,
-}: GetSentimentsForListingsProps): Promise<InputIdToSentimentMap> {
+  sentimentsCollection,
+}: getSentimentsFromGPT3Props): Promise<InputIdToSentimentMap> {
+  const alreadyProcessedOnce = (
+    await sentimentsCollection
+      .find({ redditId: { $in: inputs.map(({ id }) => id) } })
+      .toArray()
+  ).reduce<Record<string, Sentiment>>(
+    (sum, { redditId, sentiment }) => ({ ...sum, [redditId]: sentiment }),
+    {}
+  );
+
   // eslint-disable-next-line prefer-const
   let listingIdToSentiment: Record<string, Sentiment> = {};
 
   for (const input of inputs) {
+    // Skip the ones we already did once
+    if (alreadyProcessedOnce[input.id]) continue;
+
     const sentiment = await memo(
       `get-sentiment-for-a-listing-${input.id}`,
       async () => {
@@ -165,5 +172,13 @@ export async function getSentiments({
     listingIdToSentiment[input.id] = sentiment;
   }
 
-  return listingIdToSentiment;
+  const sentimentsToSaveForLater = Object.entries(listingIdToSentiment).reduce<
+    DBSentiment[]
+  >((sum, [redditId, sentiment]) => [...sum, { redditId, sentiment }], []);
+
+  if (sentimentsToSaveForLater.length > 0) {
+    await sentimentsCollection.insertMany(sentimentsToSaveForLater);
+  }
+
+  return { ...alreadyProcessedOnce, ...listingIdToSentiment };
 }

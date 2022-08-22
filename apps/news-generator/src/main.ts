@@ -10,8 +10,10 @@ import {
   REDDIT_APP_SECRET,
 } from './configuration';
 import { fetchListings, getAccessToken } from './lib/reddit';
-import { getSentiments, SentimentInput } from './lib/sentiment-prompt';
+import { getSentimentsFromGPT3 } from './lib/sentiment-gpt3';
 import { memo } from './utils/memo';
+import { getSentimentsFromHardcodedRules } from './lib/sentiment-hardcoded-rules';
+import { SentimentInput } from './lib/sentiment-common';
 
 async function run() {
   const { collections, closeConnection } = await connect({
@@ -42,7 +44,31 @@ async function run() {
         ({ data: { id, title, subreddit } }) => ({ id, title, subreddit })
       );
 
-    const sentiments = await getSentiments({ inputs: sentimentInputs });
+    const sentimentsFromHardcodedRules = getSentimentsFromHardcodedRules({
+      inputs: sentimentInputs,
+    });
+
+    /**
+     * If hardcoded rules could not decide if it's positive or negative,
+     * we will check those "neutrals" with GPT3
+     */
+    const sentimentsToCheckWithGPT3 = sentimentInputs.filter(
+      ({ id }) =>
+        sentimentsFromHardcodedRules[id] !== 'negative' &&
+        sentimentsFromHardcodedRules[id] !== 'positive'
+    );
+
+    const sentimentsFromGPT3 = await getSentimentsFromGPT3({
+      inputs: sentimentsToCheckWithGPT3,
+      sentimentsCollection: collections.sentiments,
+    });
+
+    const sentiments = {
+      ...sentimentsFromHardcodedRules,
+
+      // Overwrite hardcoded sentiments with GPT3 results
+      ...sentimentsFromGPT3,
+    };
 
     const listings = listingsResponse.data.children.reduce<DBListing[]>(
       (listingsAcc, listingResponse) => {
