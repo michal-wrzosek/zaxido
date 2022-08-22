@@ -18,6 +18,7 @@ import { getSentimentsFromGPT3 } from './lib/sentiment-gpt3';
 import { memo } from './utils/memo';
 import { getSentimentsFromHardcodedRules } from './lib/sentiment-hardcoded-rules';
 import { SentimentInput } from './lib/sentiment-common';
+import { wait } from './utils/wait';
 
 async function run() {
   const { collections, closeConnection } = await connect({
@@ -43,6 +44,8 @@ async function run() {
         })
     );
 
+    await wait(1000);
+
     const redditListingsResponse2 = await memo(
       'listings-popular-hot-global-100-2',
       async () =>
@@ -55,6 +58,8 @@ async function run() {
           after: redditListingsResponse1.data.after,
         })
     );
+
+    await wait(1000);
 
     const redditListingsResponse3 = await memo(
       'listings-popular-hot-global-100-3',

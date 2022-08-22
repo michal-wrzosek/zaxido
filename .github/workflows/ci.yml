@@ -64,7 +64,7 @@ jobs:
           MONGODB_DOMAIN: ${{ secrets.MONGODB_DOMAIN }}
 
       - name: Build Gatsby app
-        run: npx nx run gatsby-app:build --configuration production --with-deps
+        run: npx nx run gatsby-app:build --configuration production --with-deps --skip-nx-cache
         env:
           NODE_ENV: 'production'
           MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
