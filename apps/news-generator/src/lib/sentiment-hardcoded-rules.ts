@@ -55,7 +55,6 @@ export function getSentimentsFromHardcodedRules({
 
   for (const input of inputs) {
     const sentiment = getSentiment({ input });
-    console.log('sentiment', input, sentiment);
 
     listingIdToSentiment[input.id] = sentiment;
   }
