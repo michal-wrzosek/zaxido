@@ -45,6 +45,7 @@ export interface GetSentimentsFromHardcodedRulesProps {
 }
 
 function getSentiment({ input }: GetSentimentProps): Sentiment {
+  if (input.over_18) return 'negative';
   if (subredditWhitelist.includes(input.subreddit)) return 'positive';
   if (subredditBlacklist.includes(input.subreddit)) return 'negative';
   return 'neutral';

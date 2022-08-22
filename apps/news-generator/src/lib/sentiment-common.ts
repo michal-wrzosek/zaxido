@@ -4,6 +4,7 @@ export interface SentimentInput {
   id: string;
   title: string;
   subreddit: string;
+  over_18?: boolean;
 }
 
 export interface GetSentimentProps {

@@ -9,7 +9,11 @@ import {
   REDDIT_APP_ID,
   REDDIT_APP_SECRET,
 } from './configuration';
-import { fetchListings, getAccessToken } from './lib/reddit';
+import {
+  fetchListings,
+  getAccessToken,
+  getListOfUniqueListings,
+} from './lib/reddit';
 import { getSentimentsFromGPT3 } from './lib/sentiment-gpt3';
 import { memo } from './utils/memo';
 import { getSentimentsFromHardcodedRules } from './lib/sentiment-hardcoded-rules';
@@ -27,8 +31,8 @@ async function run() {
     const accessToken = await memo('access-token', async () =>
       getAccessToken(REDDIT_APP_ID, REDDIT_APP_SECRET)
     );
-    const listingsResponse = await memo(
-      'listings-popular-hot-global-100',
+    const redditListingsResponse1 = await memo(
+      'listings-popular-hot-global-100-1',
       async () =>
         fetchListings({
           accessToken,
@@ -39,10 +43,46 @@ async function run() {
         })
     );
 
-    const sentimentInputs: SentimentInput[] =
-      listingsResponse.data.children.map(
-        ({ data: { id, title, subreddit } }) => ({ id, title, subreddit })
-      );
+    const redditListingsResponse2 = await memo(
+      'listings-popular-hot-global-100-2',
+      async () =>
+        fetchListings({
+          accessToken,
+          subreddit: 'popular',
+          kind: 'hot',
+          hotLocation: 'GLOBAL',
+          limit: 100,
+          after: redditListingsResponse1.data.after,
+        })
+    );
+
+    const redditListingsResponse3 = await memo(
+      'listings-popular-hot-global-100-3',
+      async () =>
+        fetchListings({
+          accessToken,
+          subreddit: 'popular',
+          kind: 'hot',
+          hotLocation: 'GLOBAL',
+          limit: 100,
+          after: redditListingsResponse2.data.after,
+        })
+    );
+
+    const redditListings = getListOfUniqueListings([
+      ...redditListingsResponse1.data.children,
+      ...redditListingsResponse2.data.children,
+      ...redditListingsResponse3.data.children,
+    ]);
+
+    const sentimentInputs: SentimentInput[] = redditListings.map(
+      ({ data: { id, title, subreddit, over_18 } }) => ({
+        id,
+        title,
+        subreddit,
+        over_18,
+      })
+    );
 
     const sentimentsFromHardcodedRules = getSentimentsFromHardcodedRules({
       inputs: sentimentInputs,
@@ -70,7 +110,7 @@ async function run() {
       ...sentimentsFromGPT3,
     };
 
-    const listings = listingsResponse.data.children.reduce<DBListing[]>(
+    const listings = redditListings.reduce<DBListing[]>(
       (listingsAcc, listingResponse) => {
         const sentiment = sentiments[listingResponse.data.id];
         if (!sentiment) return listingsAcc;

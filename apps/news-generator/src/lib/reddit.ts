@@ -4,6 +4,7 @@ import {
   HotLocation,
   RedditApiAccessTokenResponse,
   RedditApiHotResponse,
+  RedditApiListing,
   RedditApiObjectKind,
   SortTime,
 } from './reddit.types';
@@ -83,4 +84,13 @@ export async function fetchListings(props: FetchListingsProps) {
   );
 
   return response.data;
+}
+
+export function getListOfUniqueListings(listings: RedditApiListing[]) {
+  return Object.values(
+    listings.reduce<Record<string, RedditApiListing>>(
+      (sum, listing) => ({ ...sum, [listing.data.id]: listing }),
+      {}
+    )
+  );
 }
