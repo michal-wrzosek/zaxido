@@ -31,6 +31,10 @@ display:inline-block;
 export const Thumbnail = styled.img`
   margin-top: ${themeSelector('thumbnailMarginTop')};
 `;
+export const ThumbnailWrapper = styled.div`
+  width: 14rem;
+  height: 14rem;
+`;
 export const Title = styled.a`
   display: block;
   color: inherit;

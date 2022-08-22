@@ -1,7 +1,7 @@
-import * as GraphqlTypes from '../../graphql/graphql.generated';
+import { DBListing } from '@zaxido/types-common';
 
-export const exampleListing: GraphqlTypes.Listing = {
-  id: 'example-id',
+export const exampleListing: DBListing = {
+  redditId: 'example-id',
   title: 'Example title',
   author: 'exampleauthor',
   createdUTC: +new Date('08 August 2022') / 1000,
@@ -9,17 +9,15 @@ export const exampleListing: GraphqlTypes.Listing = {
   ups: 8734,
   isNSFW: false,
   isVideo: false,
-  kind: GraphqlTypes.ListingKind.T3,
+  kind: 't3',
   numberOfComments: 413,
   permalink:
     '/r/wholesomememes/comments/wi56i5/yeah_id_wear_that_in_a_heartbeat/',
-  sentiment: GraphqlTypes.Sentiment.Positive,
   subreddit: 'wholesomememes',
   thumbnail:
     'https://b.thumbs.redditmedia.com/dzbAHC3pf_Iwh9H2buOWMzER4XcMyn39qCEM2L-PLKE.jpg',
   thumbnailWidth: 140,
   thumbnailHeight: 140,
-  updateId: +new Date('07 August 2022'),
   url: 'https://i.redd.it/zpfioclzg7g91.jpg',
   previews: [
     {

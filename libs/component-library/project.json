@@ -56,13 +56,6 @@
       "options": {
         "command": "npx graphql-codegen --config libs/component-library/codegen.yml"
       }
-    },
-    "messages": {
-      "executor": "nx:run-commands",
-      "outputs": [],
-      "options": {
-        "command": "npx formatjs extract 'libs/component-library/src/lib/**/*.ts*' --ignore='libs/component-library/src/lib/**/*.d.ts' --out-file libs/component-library/src/lib/messages/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'"
-      }
     }
   }
 }

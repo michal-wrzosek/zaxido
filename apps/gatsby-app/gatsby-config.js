@@ -14,7 +14,7 @@ module.exports = {
   siteMetadata: {
     title: `gatsby-app`,
     description: `This is a gatsby application created by Nx.`,
-  },kw
+  },
   plugins: [
     "gatsby-plugin-styled-components",
 
@@ -55,21 +55,34 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-remote-images`,
+      options: {
+        nodeType: "mongodbZaxido0Listings",
+        imagePath: "thumbnail",
+        name: "thumbnailGatsby",
+        silent: true,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-remote-images`,
+      options: {
+        nodeType: "mongodbZaxido0Listings",
+        imagePath: "previews[].source.url",
+        name: "previewsSourceUrlGatsby",
+        silent: true,
+      },
+    },
+    {
       resolve: `gatsby-source-mongodb`,
       options: {
         dbName: MONGODB_DB,
-        collection: "listings",
-        // server: {
-        //   address: MONGODB_DOMAIN,
-        // },
+        collection: ["listings"],
         connectionString: mongodbConnectionString,
-        // auth: {
-        //   user: MONGODB_USERNAME,
-        //   password: encodeURIComponent(MONGODB_PASSWORD),
-        // },
+        preserveObjectIds: true,
         extraParams: {
           w: "majority",
           retryWrites: true,
+          preserveObjectIds: true,
         },
       },
     },
