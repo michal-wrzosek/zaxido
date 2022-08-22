@@ -14,6 +14,7 @@ export const subredditWhitelist = [
   'FunnyAnimals',
   'blursedimages',
   'PeopleFuckingDying',
+  'cute',
 ];
 
 export const subredditBlacklist = [
@@ -38,6 +39,22 @@ export const subredditBlacklist = [
   'me_irl',
   'MaliciousCompliance',
   'ShitMomGroupsSay',
+  'PoliticalHumor',
+  'shitposting',
+  'ImTheMainCharacter',
+  'Justrolledintotheshop',
+  'WinStupidPrizes',
+  'StupidFood',
+  'yesyesyesyesno',
+  'Instagramreality',
+  'atheism',
+  'anime_irl',
+  'bi_irl',
+  'FunnyandSad',
+  'AbruptChaos',
+  'socialism',
+  'MurderedByWords',
+  'ukraine',
 ];
 
 export interface GetSentimentsFromHardcodedRulesProps {
