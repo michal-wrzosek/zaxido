@@ -5,7 +5,7 @@ import {
   SentimentInput,
 } from './sentiment-common';
 
-export const subredditWhitelist = [
+export const subredditWhitelist = new Set([
   'MadeMeSmile',
   'wholesomememes',
   'aww',
@@ -15,9 +15,15 @@ export const subredditWhitelist = [
   'blursedimages',
   'PeopleFuckingDying',
   'cute',
-];
+  'Eyebleach',
+  'AnimalsBeingDerps',
+  'HumansBeingBros',
+  'CozyPlaces',
+  'rarepuppers',
+  'AnimalsBeingBros',
+]);
 
-export const subredditBlacklist = [
+export const subredditBlacklist = new Set([
   'WhitePeopleTwitter',
   'oddlyterrifying',
   'mildlyinfuriating',
@@ -55,7 +61,26 @@ export const subredditBlacklist = [
   'socialism',
   'MurderedByWords',
   'ukraine',
-];
+  'WatchPeopleDieInside',
+  'Tinder',
+  'ChoosingBeggars',
+  'cursedcomments',
+  'iamatotalpieceofshit',
+  'LivestreamFail',
+  'TerrifyingAsFuck',
+  'TikTokCringe',
+  'Whatcouldgowrong',
+  'niceguys',
+  'justneckbeardthings',
+  'ShittyLifeProTips',
+  'DiWHY',
+  'BeforeNAfterAdoption',
+  'h3h3productions',
+  'me_irlgbt',
+  'CrappyDesign',
+  '2meirl4meirl',
+  'Idiotswithguns',
+]);
 
 export interface GetSentimentsFromHardcodedRulesProps {
   inputs: SentimentInput[];
@@ -63,8 +88,8 @@ export interface GetSentimentsFromHardcodedRulesProps {
 
 function getSentiment({ input }: GetSentimentProps): Sentiment {
   if (input.over_18) return 'negative';
-  if (subredditWhitelist.includes(input.subreddit)) return 'positive';
-  if (subredditBlacklist.includes(input.subreddit)) return 'negative';
+  if (subredditWhitelist.has(input.subreddit)) return 'positive';
+  if (subredditBlacklist.has(input.subreddit)) return 'negative';
   return 'neutral';
 }
 
