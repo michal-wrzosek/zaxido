@@ -141,6 +141,15 @@ export const subredditBlacklist = new Set([
   'FunnyandSad',
   'dankchristianmemes',
   'UnethicalLifeProTips',
+  'donthelpjustfilm',
+  'IdiotsNearlyDying',
+  'OneSecondBeforeDisast',
+  'UkrainianConflict',
+  'RussiaUkraineWar2022',
+  'vaxxhappened',
+  'shittyfoodporn',
+  'LesbianInsectBrothel',
+  'libertarianmeme',
 ]);
 
 export interface GetSentimentsFromHardcodedRulesProps {
