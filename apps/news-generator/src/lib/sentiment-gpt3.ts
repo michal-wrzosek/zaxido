@@ -159,17 +159,21 @@ export async function getSentimentsFromGPT3({
     // Skip the ones we already did once
     if (alreadyProcessedOnce[input.id]) continue;
 
-    const sentiment = await memo(
-      `get-sentiment-for-a-listing-${input.id}`,
-      async () => {
-        // Wait to not fire too many requests to OpenAI GPT3 API
-        await wait(1000);
+    try {
+      const sentiment = await memo(
+        `get-sentiment-for-a-listing-${input.id}`,
+        async () => {
+          // Wait to not fire too many requests to OpenAI GPT3 API
+          await wait(1000);
 
-        return getSentiment({ input });
-      }
-    );
+          return getSentiment({ input });
+        }
+      );
 
-    listingIdToSentiment[input.id] = sentiment;
+      listingIdToSentiment[input.id] = sentiment;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const sentimentsToSaveForLater = Object.entries(listingIdToSentiment).reduce<
