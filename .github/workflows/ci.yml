@@ -1,6 +1,9 @@
 name: Deploy
 on:
   workflow_dispatch:
+  schedule:
+    # Everyday at 3:30am UTC (5:30am Amsterdam time)
+    - cron: '30 3 * * *'
 
 jobs:
   main:

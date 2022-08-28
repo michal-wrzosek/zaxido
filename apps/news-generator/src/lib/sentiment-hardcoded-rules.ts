@@ -150,6 +150,7 @@ export const subredditBlacklist = new Set([
   'shittyfoodporn',
   'LesbianInsectBrothel',
   'libertarianmeme',
+  'maybemaybemaybe',
 ]);
 
 export interface GetSentimentsFromHardcodedRulesProps {
