@@ -1,4 +1,5 @@
 {
+  "name": "gatsby-app",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/gatsby-app/src",
   "projectType": "application",
@@ -35,7 +36,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/gatsby-app"],
+      "outputs": ["{workspaceRoot}/coverage/apps/gatsby-app"],
       "options": {
         "jestConfig": "apps/gatsby-app/jest.config.ts",
         "passWithNoTests": true

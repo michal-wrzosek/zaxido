@@ -1,4 +1,5 @@
 {
+  "name": "backend-common",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/backend-common/src",
   "projectType": "library",
@@ -22,7 +23,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/backend-common"],
+      "outputs": ["{workspaceRoot}/coverage/libs/backend-common"],
       "options": {
         "jestConfig": "libs/backend-common/jest.config.ts",
         "passWithNoTests": true
