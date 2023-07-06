@@ -430,7 +430,7 @@ let lastQueryTimestamp = 0;
 
 export async function GET() {
   try {
-    if (lastQueryTimestamp + queryInterval < +new Date()) {
+    if (lastQueryTimestamp + queryInterval > +new Date()) {
       return NextResponse.json({ redditListings });
     }
 
