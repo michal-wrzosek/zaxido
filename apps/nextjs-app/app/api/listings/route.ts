@@ -7,7 +7,7 @@ const configSchema = z.object({
   REDDIT_APP_SECRET: z.string(),
 });
 
-export type HotLocation =
+type HotLocation =
   | 'GLOBAL'
   | 'US'
   | 'AR'
@@ -96,9 +96,9 @@ export type HotLocation =
   | 'US_OR'
   | 'US_SD';
 
-export type SortTime = 'hour' | 'day' | 'week' | 'month' | 'year' | 'all';
+type SortTime = 'hour' | 'day' | 'week' | 'month' | 'year' | 'all';
 
-export interface RedditApiAccessTokenResponse {
+interface RedditApiAccessTokenResponse {
   access_token: string;
   token_type: 'bearer';
   /** @example 86400 */
@@ -106,7 +106,7 @@ export interface RedditApiAccessTokenResponse {
   scope: '*';
 }
 
-export enum RedditApiObjectKind {
+enum RedditApiObjectKind {
   Comment = 't1',
   Account = 't2',
   Link = 't3',
@@ -115,7 +115,7 @@ export enum RedditApiObjectKind {
   Award = 't6',
 }
 
-export interface RedditApiListing {
+interface RedditApiListing {
   /** @example "t3" */
   kind: RedditApiObjectKind;
   data: {
@@ -331,7 +331,7 @@ export interface RedditApiListing {
   };
 }
 
-export interface RedditApiHotResponse {
+interface RedditApiHotResponse {
   kind: 'Listing';
   data: {
     /** @example "t3_we3ipq" */
@@ -344,7 +344,7 @@ export interface RedditApiHotResponse {
   };
 }
 
-export async function getAccessToken(appId: string, appSecret: string) {
+async function getAccessToken(appId: string, appSecret: string) {
   const response = await axios.post<RedditApiAccessTokenResponse>(
     'https://www.reddit.com/api/v1/access_token',
     new URLSearchParams({ grant_type: 'client_credentials' }).toString(),
@@ -387,7 +387,7 @@ type FetchListingsProps =
   | FetchListingsHotProps
   | FetchListingsSortingProps;
 
-export async function fetchListings(props: FetchListingsProps) {
+async function fetchListings(props: FetchListingsProps) {
   const response = await axios.get<RedditApiHotResponse>(
     `https://oauth.reddit.com/r/${props.subreddit}/${
       props.kind
@@ -414,7 +414,7 @@ export async function fetchListings(props: FetchListingsProps) {
   return response.data;
 }
 
-export function getListOfUniqueListings(listings: RedditApiListing[]) {
+function getListOfUniqueListings(listings: RedditApiListing[]) {
   return Object.values(
     listings.reduce<Record<string, RedditApiListing>>(
       (sum, listing) => ({ ...sum, [listing.data.id]: listing }),
